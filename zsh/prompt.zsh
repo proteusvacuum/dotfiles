@@ -50,7 +50,16 @@ directory_name() {
   echo "%{$fg_bold[cyan]%}%1/%\/%{$reset_color%}"
 }
 
-export PROMPT=$'\n%n@%m:$(directory_name) $(git_dirty)$(need_push)→ '
+virtualenv_currentenv(){
+  if  [[ `basename "$VIRTUAL_ENV"` == "" ]]
+  then 
+    echo ""
+  else
+    echo "using %{$fg[yellow]%}(`basename "$VIRTUAL_ENV"`)%{$reset_color%} "
+  fi
+}
+
+export PROMPT=$'\n%n@%m:$(directory_name) $(virtualenv_currentenv)$(git_dirty)$(need_push)\n👉  '
 set_prompt () {
   export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 }
