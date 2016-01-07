@@ -1,0 +1,38 @@
+#!/bin/bash
+SESSION="commcarehq"
+WORKON="commcare-hq"
+
+create_session() {
+  tmux -2 new-session -d -s "$SESSION"
+  tmux send-keys "workon " $WORKON C-m
+  tmux send-keys "djserve"
+  tmux split-window -h
+  tmux send-keys "workon " $WORKON C-m
+  tmux send-keys "djshell"
+  tmux select-pane -t 0
+  tmux split-window -v
+  tmux send-keys "workon "  $WORKON C-m
+  tmux send-keys "gs" C-m
+  tmux select-pane -t 2
+  tmux split-window -v
+  tmux send-keys "workon " $WORKON C-m
+  tmux send-keys "./manage.py celeryd --verbosity=2 --beat --statedb=celery.db --events --loglevel=INFO"
+  tmux select-pane -t 0
+}
+
+session_exists() {
+  tmux list-sessions | sed -E 's/:.*$//' | grep -q "^$SESSION$"
+}
+
+attach_to_session() {
+  tmux -2 attach-session -t $SESSION
+}
+
+create_if_needed_and_attach() {
+  if ! session_exists; then
+    create_session
+  fi
+  attach_to_session
+}
+
+create_if_needed_and_attach

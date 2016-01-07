@@ -1,0 +1,11 @@
+--exclude=*.pyc
+--exclude=node_modules
+--exclude=staticfiles
+--exclude=bootstrap.js
+--exclude=bower_components
+--exclude=_build
+--exclude=*.js
+--exclude=.travis
+--exclude=submodules
+--exclude=*.html
+--python-kinds=-i

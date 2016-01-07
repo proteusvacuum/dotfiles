@@ -18,7 +18,7 @@ git_dirty() {
   then
     echo ""
   else
-    if [[ $($git status --porcelain) == "" ]]
+    if [[ $($git status --porcelain --ignore-submodules) == "" ]]
     then
       echo "on %{$fg_bold[green]%}$(git_prompt_info)%{$reset_color%}"
     else
@@ -42,7 +42,7 @@ need_push () {
   then
     echo " "
   else
-    echo " with %{$fg_bold[magenta]%}unpushed 💩%{$reset_color%} "
+    echo " with %{$fg_bold[magenta]%}unpushed %{$reset_color%} "
   fi
 }
 
@@ -59,7 +59,7 @@ virtualenv_currentenv(){
   fi
 }
 
-export PROMPT=$'\n%n@%m:$(directory_name) $(virtualenv_currentenv)$(git_dirty)$(need_push)\n👉  '
+export PROMPT=$'\n%n@%m:$(directory_name) $(virtualenv_currentenv)$(git_dirty)$(need_push)\n❯  '
 set_prompt () {
   export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 }

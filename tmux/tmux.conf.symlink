@@ -1,22 +1,29 @@
+#Powerline
+POWERLINE_CONFIG_COMMAND="powerline-config"
+run-shell "powerline-daemon -q"
+source "/usr/local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
+
 # enable mouse mode
 set -g mode-mouse on
-
 # use mouse to select panes
 set-option -g mouse-select-pane on
-
 # use mouse to resize panes
 set-option -g mouse-resize-pane on
 set-option -g mouse-select-window on
 
+#Unbind Ctrl-b because that goes backwards
+#Ctrl-t is currently bound to "swap characters next to cursor"
+set -g prefix C-t
+unbind-key C-b
+bind-key C-t send-prefix
+
 # enable 256 color support
 set -g default-terminal "screen-256color"
+set -g status-utf8 on
 
-# clearer status bar
-set -g status-bg '#171717'
-set -g status-fg '#ffffff'
-
-# remove status text
-set -g status-left ''
+# visual notification of activity in other windows
+setw -g monitor-activity on
+set -g visual-activity on
 
 # highlight active window
 set-window-option -g window-status-current-bg '#009AC0'
@@ -24,10 +31,13 @@ set-window-option -g window-status-current-bg '#009AC0'
 # start windows from 1
 set -g base-index 1
 
-# Set right status to uptime and load
-set -g status-right '#[fg=yellow]#(uptime | cut -d "," -f 4-)'
 
 # Automatically set window title
-setw -g automatic-rename off
+setw -g automatic-rename on
 
 bind r source-file ~/.tmux.conf \; display "Reloaded!"
+
+set-option -g display-panes-active-colour colour33 #blue
+set-option -g display-panes-colour colour166 #orange
+# clock
+set-window-option -g clock-mode-colour green #green

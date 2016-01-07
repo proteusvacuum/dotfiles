@@ -1,0 +1,15 @@
+#!/bin/sh
+echo "Exporting Env Vars"
+export ENVIRONMENT=DEVELOPMENT
+
+echo "Starting ActiveMQ"
+activemq start
+
+echo "Starting Tomcat"
+/usr/local/Cellar/tomcat7/7.0.62/libexec/bin/startup.sh
+
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "http://motech.local/motech-platform-server/"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++"
+
+tail -f /usr/local/Cellar/tomcat7/7.0.62/libexec/logs/catalina.out

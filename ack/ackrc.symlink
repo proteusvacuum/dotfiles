@@ -1,0 +1,7 @@
+--ignore-dir=log
+--ignore-dir=tmp
+--ignore-file=is:tags
+--type-set=LOG=.log
+--noLOG
+--color
+--sort-files

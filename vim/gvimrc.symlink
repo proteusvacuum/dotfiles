@@ -1,0 +1,8 @@
+" PLUNK PLUNK PLUNK
+" Turn off sounds
+set noerrorbells
+set novisualbell
+autocmd! GUIEnter * set vb t_vb=
+
+" Fonts
+set guifont=Source\ Code\ Pro\ for\ Powerline:h12
