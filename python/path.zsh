@@ -1,6 +1,4 @@
-export WORKON_HOME=~/Envs
-
-export DJANGO_PROJECT_ROOT=~/Documents/Dev/dimagi/commcare-hq
+export DJANGO_PROJECT_ROOT=$PROJECTS/dimagi/commcare-hq
 export PYTHONPATH=$DJANGO_PROJECT_ROOT:$DJANGO_PROJECT_ROOT/corehq/ex-submodules
 
 for MODULE in `ls $DJANGO_PROJECT_ROOT/submodules`
