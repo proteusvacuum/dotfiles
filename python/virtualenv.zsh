@@ -1,2 +1,3 @@
 export WORKON_HOME=~/.virtualenvs
-source /usr/bin/virtualenvwrapper.sh
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh

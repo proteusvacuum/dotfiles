@@ -124,6 +124,10 @@ link_file () {
   fi
 }
 
+install_emacsd() {
+    link_file "$DOTFILES_ROOT/emacs" "$HOME/.emacs.d"
+}
+
 install_dotfiles () {
   info 'installing dotfiles'
 
@@ -138,6 +142,7 @@ install_dotfiles () {
 
 setup_gitconfig
 install_dotfiles
+install_emacsd
 
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]
