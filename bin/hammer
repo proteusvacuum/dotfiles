@@ -5,3 +5,5 @@ pip install -r requirements/requirements.txt -r requirements/dev-requirements.tx
 find . -name '*.pyc' -delete                                                                     
 ./manage.py migrate
 ./manage.py compilejsi18n
+
+bower install
