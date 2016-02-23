@@ -1,5 +1,5 @@
-whq
-
+workon cchq
+cd ~/dev/dimagi/commcare-hq
 git checkout master
 git pull origin master
 git submodule update --init --recursive
