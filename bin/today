@@ -1,0 +1,2 @@
+#!/bin/sh
+ln $TODOS/"$*" $TODOS/today/"$(echo "$*" | sed 's/\// -> /g')"

@@ -1,0 +1,2 @@
+#compdef todos
+_files -W $TODOS -/

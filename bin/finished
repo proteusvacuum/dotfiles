@@ -1,0 +1,12 @@
+#!/bin/sh
+todays_todo=$TODOS/today/"$(echo "$*" | sed 's/\// -> /g')"
+if [ -f "$todays_todo" ]
+then
+    rm -f "$todays_todo"
+fi
+
+file=$TODOS/"$*"
+if [ -f "$file" ]
+then
+    rm -f $TODOS/"$*"
+fi

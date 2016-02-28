@@ -1,0 +1,2 @@
+#compdef finished
+_files -W $TODOS -/
