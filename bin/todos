@@ -1,3 +1,5 @@
 #!/bin/sh
-
-tree -C ~/Desktop/todos/"$*"
+# Show the tree, rename directories to tags and files to todos
+tree -C $TODOS/$* \
+    | sed s/directories/tags/g \
+    | sed s/files/todos/g;

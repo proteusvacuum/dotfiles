@@ -1,12 +1,14 @@
 #!/bin/sh
+# Delete todos set for today
 todays_todo=$TODOS/today/"$(echo "$*" | sed 's/\// -> /g')"
 if [ -f "$todays_todo" ]
 then
-    rm -f "$todays_todo"
+    rm -f "$todays_todo";
 fi
 
+# then archive the actual todo
 file=$TODOS/"$*"
 if [ -f "$file" ]
 then
-    rm -f $TODOS/"$*"
+    mv $TODOS/"$*" $TODOS_ARCHIVE/"$(echo "$*" | sed 's/\// -> /g')";
 fi

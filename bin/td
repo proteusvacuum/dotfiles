@@ -16,4 +16,5 @@
 set -e
 
 # Run our new web 2.0 todo list application and raise millions of VC dollars.
-touch ~/Desktop/todos/"$*"
+touch $TODOS/"$*";
+todos | grep --color -A 100 -B 100 "$(echo "$*" | sed 's/.*\///g')";
