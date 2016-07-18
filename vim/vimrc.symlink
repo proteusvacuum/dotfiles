@@ -20,7 +20,7 @@ set nocompatible
 " PLUGINS
 filetype off
 set rtp+=~/.dotfiles/vim/bundle/Vundle.vim
-call vundle#begin('~/.dotfiles/vim/bundle')
+call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 
@@ -94,7 +94,6 @@ endif
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
-  colorscheme monokai
 endif
 
 

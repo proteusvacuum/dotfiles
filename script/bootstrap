@@ -152,8 +152,8 @@ install_xdg () {
 
 setup_gitconfig
 install_dotfiles
-install_emacsd
 install_xdg
+install_emacsd
 
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]

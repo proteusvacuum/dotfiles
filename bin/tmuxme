@@ -1,23 +1,29 @@
 #!/bin/bash
 SESSION="commcarehq"
-WORKON="commcare-hq"
+WORKON="cchq"
+DIR="~/dev/dimagi/commcare-hq"
+
+activate_venv() {
+    tmux send-keys "workon " $WORKON C-m
+    tmux send-keys "cd " $DIR C-m
+}
 
 create_session() {
-  tmux -2 new-session -d -s "$SESSION"
-  tmux send-keys "workon " $WORKON C-m
-  tmux send-keys "djserve"
-  tmux split-window -h
-  tmux send-keys "workon " $WORKON C-m
-  tmux send-keys "djshell"
-  tmux select-pane -t 0
-  tmux split-window -v
-  tmux send-keys "workon "  $WORKON C-m
-  tmux send-keys "gs" C-m
-  tmux select-pane -t 2
-  tmux split-window -v
-  tmux send-keys "workon " $WORKON C-m
-  tmux send-keys "./manage.py celeryd --verbosity=2 --beat --statedb=celery.db --events --loglevel=INFO"
-  tmux select-pane -t 0
+    tmux -2 new-session -d -s "$SESSION"
+    tmux rename-window "Server"
+    activate_venv
+    tmux send-keys "workon " $WORKON C-m
+    tmux send-keys "djserve"
+    tmux split-window -h
+    activate_venv
+    tmux send-keys "djshell"
+    tmux new-window -n "Editor"
+    activate_venv
+    tmux send-keys "ec -t" C-m
+    tmux new-window -n "tests"
+    activate_venv
+    tmux send-keys "REUSE_DB=1 sniffer -x -s -x "
+    tmux choose-window -t 2
 }
 
 session_exists() {
@@ -29,10 +35,11 @@ attach_to_session() {
 }
 
 create_if_needed_and_attach() {
-  if ! session_exists; then
-    create_session
-  fi
-  attach_to_session
+    if ! session_exists;
+    then
+        create_session
+    fi
+    attach_to_session
 }
 
 create_if_needed_and_attach

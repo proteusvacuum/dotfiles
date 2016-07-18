@@ -1,7 +1,7 @@
 #Powerline
-POWERLINE_CONFIG_COMMAND="powerline-config"
-run-shell "powerline-daemon -q"
-source "/usr/local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
+# POWERLINE_CONFIG_COMMAND="powerline-config"
+# run-shell "powerline-daemon -q"
+# source "/usr/local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
 
 # enable mouse mode
 set -g mode-mouse on
@@ -41,3 +41,13 @@ set-option -g display-panes-active-colour colour33 #blue
 set-option -g display-panes-colour colour166 #orange
 # clock
 set-window-option -g clock-mode-colour green #green
+
+set display-panes-time 1500
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'

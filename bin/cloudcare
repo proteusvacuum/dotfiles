@@ -1,6 +1,3 @@
-#!/bin/bash
-bound="0.0.0.0:8000"
-echo "STARTING GUNICORN ON $bound =^.^="
-python manage.py run_gunicorn -w 3 --bind $bound &
+#!/usr/bin/env bash
 echo "STARTING TOUCHFORMS"
-jython submodules/touchforms-src/touchforms/backend/xformserver.py
+/opt/jython2.5.3/bin/jython submodules/touchforms-src/touchforms/backend/xformserver.py

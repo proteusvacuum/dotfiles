@@ -1,1 +1,4 @@
 *.po
+*.pyc
+app_builder_live_test/*
+

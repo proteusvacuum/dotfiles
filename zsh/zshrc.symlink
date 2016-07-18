@@ -1,8 +1,10 @@
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=100000
+setopt HIST_IGNORE_SPACE
 unsetopt beep
 bindkey -e
+
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/farid/.zshrc'
