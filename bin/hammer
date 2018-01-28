@@ -1,27 +1,29 @@
 #!/usr/bin/env bash
-echo Activating cchq environment...
-source ~/.virtualenvs/cchq/bin/activate
+echo Activating cchq environment... &&
+    source ~/.virtualenvs/cchq/bin/activate &&
 
-echo Entering commcare-hq folder...
-cd ~/dev/dimagi/commcare-hq
+    echo "Entering commcare-hq folder..." &&
+    cd ~/dev/dimagi/commcare-hq &&
 
-echo Fetch all new stuff from git...
-git fetch
-git checkout master
-git pull origin master
-git submodule update --init --recursive
+    echo "Fetch all new stuff from git..." &&
+    update-code &&
 
-echo Installing all requirements
-pip install -r requirements/requirements.txt -r requirements/dev-requirements.txt -r requirements/prod-requirements.txt
+    echo "Installing all requirements" &&
+    pip install -r requirements/requirements.txt -r requirements/dev-requirements.txt -r requirements/prod-requirements.txt &&
 
-echo Deleting old python files...
-find . -name '*.pyc' -delete
+    echo "Deleting old python files..." &&
+    find . -name '*.pyc' -delete &&
 
-echo Migrate...
-./manage.py migrate
+    echo "Migrate..." &&
+    ./manage.py migrate &&
 
-echo Compiling internationalized files...
-./manage.py compilejsi18n
 
-echo Install new javascript deps...
-bower install
+    if [ "$1" = "--javascript" ]; then
+        echo "Compiling internationalized files..."
+        ./manage.py compilejsi18n
+        echo "Install new javascript deps..."
+        bower install
+        bower update
+    else
+        echo "Skipping bower install..."
+    fi

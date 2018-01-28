@@ -1,7 +1,6 @@
 alias djm='python manage.py'
-alias djstart='./dockerhq.sh services start'
-alias djserve='python manage.py runserver'
+alias djserve='python manage.py runserver 0.0.0.0:8000'
 alias djshell='python manage.py shell_plus'
-alias djt='python manage.py test'
+alias djt='REUSE_DB=1 python manage.py test'
 
 alias whq='workon cchq; cd ~/dev/dimagi/commcare-hq'

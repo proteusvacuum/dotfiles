@@ -1,15 +1,14 @@
 #!/bin/sh
 echo "Exporting Env Vars"
-export ENVIRONMENT=DEVELOPMENT
 
-echo "Starting ActiveMQ"
-activemq start
+export ENVIRONMENT=DEVELOPMENT
+export org_motechproject_helloworld=$PROJECTS/dimagi/motech-learning/helloworld/src/main/resources;
 
 echo "Starting Tomcat"
-/usr/local/Cellar/tomcat7/7.0.62/libexec/bin/startup.sh
+~/dev/java/apache-tomcat-7.0.70/bin/catalina.sh jpda start
 
 echo "+++++++++++++++++++++++++++++++++++++++++++++++++"
-echo "http://motech.local/motech-platform-server/"
+echo "http://localhost:8080/motech-platform-server/"
 echo "+++++++++++++++++++++++++++++++++++++++++++++++++"
 
-tail -f /usr/local/Cellar/tomcat7/7.0.62/libexec/logs/catalina.out
+tail -f $PROJECTS/java/apache-tomcat-7.0.70/logs/catalina.out

@@ -1,0 +1,3 @@
+sudo rm -r ~/.local/share/dockerhq/zookeeper ~/.local/share/dockerhq/kafka
+./scripts/docker restart kafka
+./manage.py create_kafka_topics

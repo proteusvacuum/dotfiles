@@ -1,6 +1,5 @@
 #!/bin/sh
 
+git fetch --prune
 git checkout master; git pull origin master
-git submodule update --init
-git submodule foreach --recursive 'git checkout master; git pull origin master &'
-until [ -z "$(ps aux | grep '[g]it pull')" ]; do sleep 1; done
+git submodule update --init --recursive

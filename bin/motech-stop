@@ -1,3 +1,2 @@
 #!/bin/sh
-activemq stop
-/usr/local/Cellar/tomcat7/7.0.62/libexec/bin/shutdown.sh
+~/dev/java/apache-tomcat-7.0.70/bin/catalina.sh jpda stop
