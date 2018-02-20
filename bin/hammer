@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -e
+
 echo Activating cchq environment... &&
     source ~/.virtualenvs/cchq/bin/activate &&
 
