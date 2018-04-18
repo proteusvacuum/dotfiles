@@ -1,31 +1,31 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-echo Activating cchq environment... &&
-    source ~/.virtualenvs/cchq/bin/activate &&
+echo "Activating cchq environment..."
+source ~/.virtualenvs/cchq/bin/activate
 
-    echo "Entering commcare-hq folder..." &&
-    cd ~/dev/dimagi/commcare-hq &&
+echo "Entering commcare-hq folder..."
+cd ~/dev/dimagi/commcare-hq
 
-    echo "Fetch all new stuff from git..." &&
-    update-code &&
+echo "Fetch all new stuff from git..."
+update-code
 
-    echo "Installing all requirements" &&
-    pip install -r requirements/requirements.txt -r requirements/dev-requirements.txt -r requirements/prod-requirements.txt &&
+echo "Installing all requirements"
+pip install -r requirements/requirements.txt -r requirements/dev-requirements.txt -r requirements/prod-requirements.txt
 
-    echo "Deleting old python files..." &&
-    find . -name '*.pyc' -delete &&
+echo "Deleting old python files..."
+find . -name '*.pyc' -delete
 
-    echo "Migrate..." &&
-    ./manage.py migrate &&
+echo "Migrate..."
+./manage.py migrate
 
-
-    if [ "$1" = "--javascript" ]; then
-        echo "Compiling internationalized files..."
-        ./manage.py compilejsi18n
-        echo "Install new javascript deps..."
-        bower install
-        bower update
-    else
-        echo "Skipping bower install..."
-    fi
+javascript=${1:-}
+if [ "$javascript" = "--javascript" ]; then
+    echo "Compiling internationalized files..."
+    ./manage.py compilejsi18n
+    echo "Install new javascript deps..."
+    bower install
+    bower update
+else
+    echo "Skipping bower install..."
+fi

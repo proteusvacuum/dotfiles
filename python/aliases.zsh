@@ -4,3 +4,4 @@ alias djshell='python manage.py shell_plus'
 alias djt='REUSE_DB=1 python manage.py test'
 
 alias whq='workon cchq; cd ~/dev/dimagi/commcare-hq'
+alias wca='workon ccansible; cd ~/dev/dimagi/commcarehq-ansible'

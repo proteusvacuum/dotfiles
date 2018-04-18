@@ -1,2 +1,0 @@
-#!/bin/sh
-~/dev/java/apache-tomcat-7.0.70/bin/catalina.sh jpda stop
