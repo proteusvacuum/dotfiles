@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "Activating cchq environment..."
-source ~/.virtualenvs/cchq/bin/activate
+source ~/.virtualenvs/cchq-py3/bin/activate
 
 echo "Entering commcare-hq folder..."
 cd ~/dev/dimagi/commcare-hq
@@ -11,7 +11,7 @@ echo "Fetch all new stuff from git..."
 update-code
 
 echo "Installing all requirements"
-pip install -r requirements/requirements.txt -r requirements/dev-requirements.txt -r requirements/prod-requirements.txt
+pip install -r requirements/requirements.txt -r requirements/prod-requirements.txt
 
 echo "Deleting old python files..."
 find . -name '*.pyc' -delete

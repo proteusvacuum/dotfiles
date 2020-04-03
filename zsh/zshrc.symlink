@@ -60,3 +60,12 @@ unset config_files
 
 # added by travis gem
 [ -f /home/farid/.travis/travis.sh ] && source /home/farid/.travis/travis.sh
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/farid/dev/amavm-vdh-api/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/farid/dev/amavm-vdh-api/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/farid/dev/amavm-vdh-api/node_modules/tabtab/.completions/sls.zsh ]] && . /home/farid/dev/amavm-vdh-api/node_modules/tabtab/.completions/sls.zsh
+export NVS_HOME="$HOME/.nvs"
+[ -s "$NVS_HOME/nvs.sh" ] && . "$NVS_HOME/nvs.sh"
