@@ -6,8 +6,6 @@ alias pbpaste='xclip -selection clipboard -o'
 
 alias grep='grep --color'
 
-alias pycharm='/opt/pycharm-2016.1/bin/pycharm.sh &'
-
 alias dimagi-gpg="gpg --keyring dimagi.gpg --no-default-keyring"
 
 # zip the contents a directory as a ccz using the name of the current ccz in the directory

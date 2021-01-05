@@ -1,3 +1,4 @@
 export WORKON_HOME=~/.virtualenvs
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+source /usr/local/bin/virtualenvwrapper.sh
