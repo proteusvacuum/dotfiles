@@ -81,6 +81,7 @@ This function should only modify configuration layer settings."
      sql
      (unicode-fonts :variables unicode-fonts-enable-ligatures t)
      prettier
+     (multiple-cursors :variables multiple-cursors-backend 'mc)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
