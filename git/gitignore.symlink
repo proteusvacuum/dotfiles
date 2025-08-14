@@ -2,3 +2,4 @@
 *~
 *.swp
 *.md.temp
+.claude/settings.local.json
