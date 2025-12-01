@@ -63,11 +63,11 @@ This function should only modify configuration layer settings."
      (markdown :variables markdown-live-preview-engine 'vmd)
      (org :variables org-enable-org-journal-support t)
      (shell :variables
-            shell-default-shell 'multi-vterm
-            shell-default-height 30
+            shell-default-shell 'vterm
             shell-default-position 'bottom
+            shell-default-height 40
             shell-pop-autocd-to-working-dir nil
-            vterm-max-scrollback 100000)
+            vterm-max-scrollback 10000)
      syntax-checking
      colors
      (html :variables
@@ -83,17 +83,16 @@ This function should only modify configuration layer settings."
                  ;; javascript-fmt-on-save t
                  javascript-lsp-linter nil)
      (typescript :variables
-                 typescript-backend 'lsp
                  typescript-fmt-tool 'prettier
-                 typescript-fmt-on-save t
+                 typescript-fmt-on-save nil
                  typescript-indent-level 2
-                 typescript-lsp-linter nil
                  typescript-linter 'eslint)
      (python :variables
              python-backend 'lsp python-lsp-server 'pyright
              python-test-runner 'pytest
-             python-formatter 'black
+             python-formatter 'ruff
              python-format-on-save nil)
+     dap
      (ipython-notebook)
      django
      (yaml :variables yaml-enable-lsp t)
@@ -101,7 +100,7 @@ This function should only modify configuration layer settings."
      (unicode-fonts :variables unicode-fonts-enable-ligatures t)
      prettier
      (multiple-cursors :variables multiple-cursors-backend 'mc)
-     github-copilot
+     ;; github-copilot
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -111,7 +110,15 @@ This function should only modify configuration layer settings."
    '(
      ;; yasnippet-snippets
      ;; blacken
+     (platformio-mode)
      (claude-code-ide :location (recipe :fetcher github :repo "manzaltu/claude-code-ide.el"))
+     ;; (shell-maker)
+     ;; (acp :location (recipe :fetcher github :repo "xenodium/acp.el"))
+     ;; (agent-shell :location (recipe :fetcher github :repo "xenodium/agent-shell"))
+     (orangey-bits-theme
+      :location (recipe
+                 :fetcher github
+                 :repo "emacsfodder/emacs-theme-orangey-bits"))
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
@@ -265,7 +272,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(all-the-icons :separator none)
+   dotspacemacs-mode-line-theme '(doom :separator wave :separator-scale 1.5)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -280,10 +287,20 @@ It should only modify the values of Spacemacs settings."
    ;;                             :size 8.5
    ;;                             :weight normal
    ;;                             :width normal)
-   dotspacemacs-default-font '("IBM Plex Mono"
-                               :size 10.0
+
+
+   ;; dotspacemacs-default-font '("IBM Plex Mono"
+   ;;                             :size 8.5
+   ;;                             :weight normal
+   ;;                             :width normal)
+
+   dotspacemacs-default-font '("Maple Mono"
+                               :size 8.5
                                :weight normal
                                :width normal)
+
+   ;; Default icons font, it can be `all-the-icons' or `nerd-icons'.
+   dotspacemacs-default-icons-font 'all-the-icons
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -536,7 +553,7 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues, instead of calculating the frame title by
    ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I@%S"
+   dotspacemacs-frame-title-format "%b (%t)"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -617,14 +634,29 @@ you should place you code here."
 
 
   ;; Changes function that is run for pytest
-  (use-package pytest
-    :init
-    (progn
-      (setq pytest-global-name "docker compose run tester python runtests.py")
-      :ensure t))
+  ;; (use-package pytest
+  ;;   :init
+  ;;   (progn
+  ;;     (setq pytest-global-name "docker compose run tester python runtests.py")
+  ;;     :ensure t))
   (with-eval-after-load 'lsp-mode
     (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\dimagi\\'")
     (setq lsp-file-watch-threshold 5000))
+
+  (require 'platformio-mode)
+
+  ;; Enable ccls for all c++ files, and platformio-mode only
+  ;; when needed (platformio.ini present in project root).
+  (add-hook 'c-mode-hook (lambda ()
+                           (lsp-deferred)
+                           (platformio-conditionally-enable)))
+  (add-hook 'c++-mode-hook (lambda ()
+                             (lsp-deferred)
+                             (platformio-conditionally-enable)))
+  ;; (require 'dap-python)
+
+  ;; (require 'acp)
+  ;; (require 'agent-shell)
 
 
   ;; (defun nxml-pretty-format ()
@@ -650,23 +682,23 @@ you should place you code here."
     (claude-code-ide-emacs-tools-setup))
 
   ;; Make modeline text readable in dark themes
-  (custom-set-faces
-   '(mode-line ((t (:foreground "#ffffff" :background "#333333" :box nil))))
-   '(mode-line-inactive ((t (:foreground "#888888" :background "#222222" :box nil))))
-   '(spaceline-all-the-icons-info-face ((t (:foreground "#ffffff"))))
-   '(spaceline-all-the-icons-buffer-id-face ((t (:foreground "#ffffff" :weight bold))))
-   '(spaceline-all-the-icons-buffer-path-face ((t (:foreground "#cccccc"))))
-   '(spaceline-all-the-icons-projectile-face ((t (:foreground "#ffffff"))))
-   '(spaceline-all-the-icons-vc-face ((t (:foreground "#ffffff"))))
-   '(spaceline-all-the-icons-modified-face ((t (:foreground "#ff6666"))))
-   '(spaceline-all-the-icons-read-only-face ((t (:foreground "#ffcc66"))))
-   ;; Additional faces for text elements
-   '(powerline-active1 ((t (:foreground "#ffffff" :background "#444444"))))
-   '(powerline-active2 ((t (:foreground "#ffffff" :background "#555555"))))
-   '(powerline-inactive1 ((t (:foreground "#888888" :background "#333333"))))
-   '(powerline-inactive2 ((t (:foreground "#888888" :background "#222222"))))
-   '(spaceline-highlight-face ((t (:foreground "#ffffff" :background "#666666"))))
-   '(mode-line-buffer-id ((t (:foreground "#ffffff" :weight bold)))))
+  ;; (custom-set-faces
+  ;;  '(mode-line ((t (:foreground "#ffffff" :background "#333333" :box nil))))
+  ;;  '(mode-line-inactive ((t (:foreground "#888888" :background "#222222" :box nil))))
+  ;;  '(spaceline-all-the-icons-info-face ((t (:foreground "#ffffff"))))
+  ;;  '(spaceline-all-the-icons-buffer-id-face ((t (:foreground "#ffffff" :weight bold))))
+  ;;  '(spaceline-all-the-icons-buffer-path-face ((t (:foreground "#cccccc"))))
+  ;;  '(spaceline-all-the-icons-projectile-face ((t (:foreground "#ffffff"))))
+  ;;  '(spaceline-all-the-icons-vc-face ((t (:foreground "#ffffff"))))
+  ;;  '(spaceline-all-the-icons-modified-face ((t (:foreground "#ff6666"))))
+  ;;  '(spaceline-all-the-icons-read-only-face ((t (:foreground "#ffcc66"))))
+  ;;  ;; Additional faces for text elements
+  ;;  '(powerline-active1 ((t (:foreground "#ffffff" :background "#444444"))))
+  ;;  '(powerline-active2 ((t (:foreground "#ffffff" :background "#555555"))))
+  ;;  '(powerline-inactive1 ((t (:foreground "#888888" :background "#333333"))))
+  ;;  '(powerline-inactive2 ((t (:foreground "#888888" :background "#222222"))))
+  ;;  '(spaceline-highlight-face ((t (:foreground "#ffffff" :background "#666666"))))
+  ;;  '(mode-line-buffer-id ((t (:foreground "#ffffff" :weight bold)))))
 
   (setq python-indent-offset 4)
   )
@@ -697,22 +729,22 @@ This function is called at the very end of Spacemacs initialization."
    '(claude-code-ide-window-width 90)
    '(evil-want-Y-yank-to-eol nil)
    '(package-selected-packages
-     '(ac-ispell ace-jump-helm-line ace-link aggressive-indent ansible ansible-doc
-                 arduino-mode auto-compile auto-highlight-symbol auto-yasnippet
-                 blacken browse-at-remote bundler centered-cursor-mode chruby
-                 cider-eval-sexp-fu clean-aindent-mode clojure-snippets
-                 color-identifiers-mode column-enforce-mode company-anaconda
-                 company-ansible company-emoji company-php company-phpactor
-                 company-web compat copilot csv-mode cython-mode define-word
-                 diff-hl diminish dired-quick-sort dotenv-mode drag-stuff
-                 drupal-mode dumb-jump ebuild-mode editorconfig elisp-slime-nav
-                 emmet-mode emoji-cheat-sheet-plus emojify emr esh-help
-                 eshell-prompt-extras eshell-z esxml evil-anzu evil-args
-                 evil-cleverparens evil-collection evil-ediff evil-escape
-                 evil-exchange evil-goggles evil-iedit-state evil-indent-plus
-                 evil-lion evil-lisp-state evil-matchit evil-mc
-                 evil-nerd-commenter evil-numbers evil-org evil-surround
-                 evil-textobj-line evil-tutor evil-unimpaired
+     '(ac-ispell ace-jump-helm-line ace-link acp agent-shell aggressive-indent
+                 ansible ansible-doc arduino-mode auto-compile
+                 auto-highlight-symbol auto-yasnippet blacken browse-at-remote
+                 bundler centered-cursor-mode chruby cider-eval-sexp-fu
+                 clean-aindent-mode clojure-snippets color-identifiers-mode
+                 column-enforce-mode company-anaconda company-ansible
+                 company-emoji company-php company-phpactor company-web compat
+                 copilot creamsody-theme csv-mode cython-mode define-word diff-hl
+                 diminish dired-quick-sort dotenv-mode drag-stuff drupal-mode
+                 dumb-jump ebuild-mode editorconfig elisp-slime-nav emmet-mode
+                 emoji-cheat-sheet-plus emojify emr esh-help eshell-prompt-extras
+                 eshell-z esxml evil-anzu evil-args evil-cleverparens
+                 evil-collection evil-ediff evil-escape evil-exchange evil-goggles
+                 evil-iedit-state evil-indent-plus evil-lion evil-lisp-state
+                 evil-matchit evil-mc evil-nerd-commenter evil-numbers evil-org
+                 evil-surround evil-textobj-line evil-tutor evil-unimpaired
                  evil-visual-mark-mode evil-visualstar expand-region eyebrowse
                  fancy-battery flx-ido flycheck-elsa flycheck-package
                  flycheck-pos-tip font-lock+ fuzzy geben gemini-mode gh-md gist
@@ -730,20 +762,21 @@ This function is called at the very end of Spacemacs initialization."
                  live-py-mode livid-mode logcat lorem-ipsum macrostep markdown-toc
                  matlab-mode maven-test-mode meghanada memoize minitest mmm-mode
                  multi-line multi-term mvn mwim nameless nginx-mode nodejs-repl
-                 nose nov npm-mode open-junk-file org-cliplink org-contrib
-                 org-download org-journal org-mime org-pomodoro org-present
-                 org-projectile org-rich-yank org-superstar orgit-forge overseer
-                 paradox password-generator php-auto-yasnippets php-extras phpcbf
-                 phpunit pip-requirements pipenv pippel pkgbuild-mode poetry
-                 pony-mode popwin prettier-js pug-mode py-isort pyenv-mode pytest
-                 qml-mode quickrun rainbow-delimiters rainbow-identifiers
-                 rainbow-mode rake ranger rbenv restart-emacs robe rspec-mode
-                 rubocop rubocopfmt ruby-hash-syntax ruby-refactor ruby-test-mode
-                 ruby-tools rvm sass-mode scad-mode scss-mode seeing-is-believing
-                 shell-pop slim-mode smeargle solarized-theme
-                 spaceline-all-the-icons sphinx-doc sql-indent stan-mode
-                 string-edit string-inflection symbol-overlay symon tagedit
-                 terminal-here tern thrift tide toc-org toml-mode
+                 nose nov npm-mode nyan-mode open-junk-file org-cliplink
+                 org-contrib org-download org-journal org-mime org-pomodoro
+                 org-present org-projectile org-rich-yank org-superstar
+                 orgit-forge overseer paradox password-generator
+                 php-auto-yasnippets php-extras phpcbf phpunit pip-requirements
+                 pipenv pippel pkgbuild-mode poetry pony-mode popwin prettier-js
+                 pug-mode py-isort pyenv-mode pytest qml-mode quickrun
+                 rainbow-delimiters rainbow-identifiers rainbow-mode rake ranger
+                 rbenv reformatter restart-emacs robe rspec-mode rubocop
+                 rubocopfmt ruby-hash-syntax ruby-refactor ruby-test-mode
+                 ruby-tools ruff-format rvm sass-mode scad-mode scss-mode
+                 seeing-is-believing shell-maker shell-pop slim-mode smeargle
+                 solarized-theme spaceline-all-the-icons sphinx-doc sql-indent
+                 stan-mode string-edit string-inflection symbol-overlay symon
+                 tagedit terminal-here tern thrift tide toc-org toml-mode
                  treemacs-icons-dired treemacs-magit treemacs-persp
                  treemacs-projectile typescript-mode undo-tree unfill
                  unicode-fonts use-package uuidgen vala-mode vala-snippets
@@ -751,6 +784,7 @@ This function is called at the very end of Spacemacs initialization."
                  web-mode which-key winum wolfram-mode writeroom-mode ws-butler
                  xkcd xquery-mode xterm-color yaml-mode yapfify yasnippet-snippets))
    '(paradox-github-token t)
+   '(safe-local-variable-directories '("/home/farid/dev/aoc/"))
    '(warning-suppress-types '((comp)))
    '(web-mode-code-indent-offset 2 t)
    '(web-mode-enable-auto-indentation nil))
