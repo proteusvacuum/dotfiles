@@ -150,10 +150,29 @@ install_xdg () {
       done
 }
 
+install_tpm () {
+  if [ ! -d "$HOME/.tmux/plugins/tpm" ]
+  then
+    info 'installing tmux plugin manager'
+    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+    success 'tpm installed'
+  fi
+}
+
+install_spacemacs () {
+  if [ ! -d "$HOME/.emacs.d" ]
+  then
+    info 'installing spacemacs'
+    git clone https://github.com/syl20bnr/spacemacs "$HOME/.emacs.d"
+    success 'spacemacs installed'
+  fi
+}
+
 setup_gitconfig
 install_dotfiles
 install_xdg
-install_emacsd
+install_spacemacs
+install_tpm
 
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]

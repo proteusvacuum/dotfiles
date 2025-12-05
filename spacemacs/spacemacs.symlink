@@ -115,10 +115,6 @@ This function should only modify configuration layer settings."
      ;; (shell-maker)
      ;; (acp :location (recipe :fetcher github :repo "xenodium/acp.el"))
      ;; (agent-shell :location (recipe :fetcher github :repo "xenodium/agent-shell"))
-     (orangey-bits-theme
-      :location (recipe
-                 :fetcher github
-                 :repo "emacsfodder/emacs-theme-orangey-bits"))
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
@@ -284,7 +280,7 @@ It should only modify the values of Spacemacs settings."
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    ;; dotspacemacs-default-font '("FiraCode Nerd Font"
-   ;;                             :size 8.5
+   ;;                             :size 10.5
    ;;                             :weight normal
    ;;                             :width normal)
 
@@ -294,13 +290,13 @@ It should only modify the values of Spacemacs settings."
    ;;                             :weight normal
    ;;                             :width normal)
 
-   dotspacemacs-default-font '("Maple Mono"
-                               :size 8.5
+   dotspacemacs-default-font '("Maple Mono NF"
+                               :size 12.5
                                :weight normal
                                :width normal)
 
    ;; Default icons font, it can be `all-the-icons' or `nerd-icons'.
-   dotspacemacs-default-icons-font 'all-the-icons
+   dotspacemacs-default-icons-font 'nerd-icons
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -605,7 +601,13 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil))
+   dotspacemacs-byte-compile nil
+
+   (require 'quelpa-use-package)
+   (when (eq system-type 'darwin)
+     ;; Use gnu-tar to unpack packages on macos.
+     (setq-default quelpa-build-tar-executable "/opt/homebrew/bin/gtar"))
+   ))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -632,6 +634,10 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
 
+  ;; Use Command as Meta on macOS
+  (when (eq system-type 'darwin)
+    (setq mac-command-modifier 'meta)
+    (setq mac-option-modifier 'super))
 
   ;; Changes function that is run for pytest
   ;; (use-package pytest
@@ -718,7 +724,6 @@ This function is called at the very end of Spacemacs initialization."
    ;; If there is more than one, they won't work right.
    '(auth-source-save-behavior nil)
    '(claude-code-ide-cli-extra-flags "")
-   '(claude-code-ide-cli-path "/home/farid/.claude/local/claude")
    '(claude-code-ide-focus-claude-after-ediff t)
    '(claude-code-ide-focus-on-open t)
    '(claude-code-ide-show-claude-window-in-ediff t)
