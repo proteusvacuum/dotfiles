@@ -100,6 +100,7 @@ This function should only modify configuration layer settings."
      (unicode-fonts :variables unicode-fonts-enable-ligatures t)
      prettier
      (multiple-cursors :variables multiple-cursors-backend 'mc)
+     terraform
      ;; github-copilot
      )
    ;; List of additional packages that will be installed without being
@@ -601,13 +602,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil
-
-   (require 'quelpa-use-package)
-   (when (eq system-type 'darwin)
-     ;; Use gnu-tar to unpack packages on macos.
-     (setq-default quelpa-build-tar-executable "/opt/homebrew/bin/gtar"))
-   ))
+   dotspacemacs-byte-compile nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -624,7 +619,9 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  )
+  (when (eq system-type 'darwin)
+    ;; Use gnu-tar to unpack packages on macos.
+    (setq-default quelpa-build-tar-executable "/opt/homebrew/bin/gtar")))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -790,6 +787,15 @@ This function is called at the very end of Spacemacs initialization."
                  xkcd xquery-mode xterm-color yaml-mode yapfify yasnippet-snippets))
    '(paradox-github-token t)
    '(safe-local-variable-directories '("/home/farid/dev/aoc/"))
+   '(safe-local-variable-values
+     '((eval setq-local lsp-rust-analyzer-linked-projects
+             (vector
+              (expand-file-name "Cargo.toml"
+                                (locate-dominating-file buffer-file-name
+                                                        "Cargo.toml"))))
+       (typescript-backend . tide) (typescript-backend . lsp)
+       (javascript-backend . tide) (javascript-backend . tern)
+       (javascript-backend . lsp)))
    '(warning-suppress-types '((comp)))
    '(web-mode-code-indent-offset 2 t)
    '(web-mode-enable-auto-indentation nil))
