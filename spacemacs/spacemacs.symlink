@@ -32,7 +32,9 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '((rust :variables
+   '(osx
+     react
+     (rust :variables
            lsp-rust-analyzer-cargo-auto-reload t
            rustic-format-on-save t)
      toml
@@ -67,7 +69,8 @@ This function should only modify configuration layer settings."
             shell-default-position 'bottom
             shell-default-height 40
             shell-pop-autocd-to-working-dir nil
-            vterm-max-scrollback 10000)
+            vterm-max-scrollback 10000
+            vterm-timer-delay 0.01)
      syntax-checking
      colors
      (html :variables
@@ -386,6 +389,14 @@ It should only modify the values of Spacemacs settings."
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
 
+   ;; Make consecutive tab key presses after commands such as
+   ;; `spacemacs/alternate-buffer' (SPC TAB) cycle through previous
+   ;; buffers/windows/etc. Please see the option's docstring for more information.
+   ;; Set the option to t in order to enable cycling for all current and
+   ;; future cycling commands. Alternatively, choose a subset of the currently
+   ;; supported commands: '(alternate-buffer alternate-window). (default nil)
+   dotspacemacs-enable-cycling nil
+
    ;; Whether side windows (such as those created by treemacs or neotree)
    ;; are kept or minimized by `spacemacs/toggle-maximize-window' (SPC w m).
    ;; (default t)
@@ -521,14 +532,13 @@ It should only modify the values of Spacemacs settings."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("ag" "rg" "ack" "grep")
 
    ;; The backend used for undo/redo functionality. Possible values are
-   ;; `undo-fu', `undo-redo' and `undo-tree' see also `evil-undo-system'.
+   ;; `undo-redo', `undo-fu' and `undo-tree' see also `evil-undo-system'.
    ;; Note that saved undo history does not get transferred when changing
-   ;; your undo system. The default is currently `undo-fu' as `undo-tree'
-   ;; is not maintained anymore and `undo-redo' is very basic."
-   dotspacemacs-undo-system 'undo-fu
+   ;; your undo system from or to undo-tree. (default `undo-redo')
+   dotspacemacs-undo-system 'undo-tree
 
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
@@ -550,7 +560,7 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues, instead of calculating the frame title by
    ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%b (%t)"
+   dotspacemacs-frame-title-format "%f (%t)"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -684,6 +694,9 @@ you should place you code here."
     :config
     (claude-code-ide-emacs-tools-setup))
 
+
+  (setq markdown-command "pandoc -f gfm -t html --highlight-style=pygments")
+
   ;; Make modeline text readable in dark themes
   ;; (custom-set-faces
   ;;  '(mode-line ((t (:foreground "#ffffff" :background "#333333" :box nil))))
@@ -731,8 +744,8 @@ This function is called at the very end of Spacemacs initialization."
    '(claude-code-ide-window-width 90)
    '(evil-want-Y-yank-to-eol nil)
    '(package-selected-packages
-     '(ac-ispell ace-jump-helm-line ace-link acp agent-shell aggressive-indent
-                 ansible ansible-doc arduino-mode auto-compile
+     '(ac-ispell ace-jump-helm-line ace-link acp add-node-modules-path agent-shell
+                 aggressive-indent ansible ansible-doc arduino-mode auto-compile
                  auto-highlight-symbol auto-yasnippet blacken browse-at-remote
                  bundler centered-cursor-mode chruby cider-eval-sexp-fu
                  clean-aindent-mode clojure-snippets color-identifiers-mode
@@ -752,27 +765,27 @@ This function is called at the very end of Spacemacs initialization."
                  flycheck-pos-tip font-lock+ fuzzy geben gemini-mode gh-md gist
                  git-link git-messenger git-timemachine gitattributes-mode
                  gitconfig-mode github-clone github-search gitignore-templates
-                 gnuplot golden-ratio google-translate grip-mode groovy-imports
-                 groovy-mode helm-ag helm-c-yasnippet helm-cider helm-company
-                 helm-cscope helm-css-scss helm-descbinds helm-flx helm-git-grep
-                 helm-ls-git helm-make helm-mode-manager helm-org helm-org-rifle
-                 helm-projectile helm-purpose helm-pydoc helm-swoop helm-themes
-                 helm-xref highlight-indentation highlight-numbers
+                 gnuplot golden-ratio google-translate grip-mode grizzl
+                 groovy-imports groovy-mode helm-ag helm-c-yasnippet helm-cider
+                 helm-company helm-cscope helm-css-scss helm-descbinds helm-flx
+                 helm-git-grep helm-ls-git helm-make helm-mode-manager helm-org
+                 helm-org-rifle helm-projectile helm-purpose helm-pydoc helm-swoop
+                 helm-themes helm-xref highlight-indentation highlight-numbers
                  highlight-parentheses hl-todo hoon-mode hungry-delete hybrid-mode
-                 impatient-mode importmagic indent-guide info+ jinja2-mode js-doc
-                 js2-refactor json-mode json-navigator kv ligature link-hint
-                 live-py-mode livid-mode logcat lorem-ipsum macrostep markdown-toc
-                 matlab-mode maven-test-mode meghanada memoize minitest mmm-mode
-                 multi-line multi-term mvn mwim nameless nginx-mode nodejs-repl
-                 nose nov npm-mode nyan-mode open-junk-file org-cliplink
-                 org-contrib org-download org-journal org-mime org-pomodoro
-                 org-present org-projectile org-rich-yank org-superstar
-                 orgit-forge overseer paradox password-generator
+                 impatient-mode import-js importmagic indent-guide info+
+                 jinja2-mode js-doc js2-refactor json-mode json-navigator kv
+                 ligature link-hint live-py-mode livid-mode logcat lorem-ipsum
+                 macrostep markdown-toc matlab-mode maven-test-mode meghanada
+                 memoize minitest mmm-mode multi-line multi-term mvn mwim nameless
+                 nginx-mode nodejs-repl nose nov npm-mode nyan-mode open-junk-file
+                 org-cliplink org-contrib org-download org-journal org-mime
+                 org-pomodoro org-present org-projectile org-rich-yank
+                 org-superstar orgit-forge overseer paradox password-generator
                  php-auto-yasnippets php-extras phpcbf phpunit pip-requirements
                  pipenv pippel pkgbuild-mode poetry pony-mode popwin prettier-js
-                 pug-mode py-isort pyenv-mode pytest qml-mode quickrun
+                 pug-mode py-isort pyenv-mode pytest qml-mode queue quickrun
                  rainbow-delimiters rainbow-identifiers rainbow-mode rake ranger
-                 rbenv reformatter restart-emacs robe rspec-mode rubocop
+                 rbenv reformatter restart-emacs rjsx-mode robe rspec-mode rubocop
                  rubocopfmt ruby-hash-syntax ruby-refactor ruby-test-mode
                  ruby-tools ruff-format rvm sass-mode scad-mode scss-mode
                  seeing-is-believing shell-maker shell-pop slim-mode smeargle
@@ -804,6 +817,5 @@ This function is called at the very end of Spacemacs initialization."
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
-   '(default ((t (:family "Fira Code" :foundry "CTDB" :slant normal :weight regular :height 98 :width normal))))
    '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
   )
