@@ -15,7 +15,7 @@
 #   # => opens the specified directory in your editor
 
 if [ "$1" = "" ] ; then
-  exec $EDITOR "$(pwd)" &
+  ec "$(pwd)"
 else
-  exec $EDITOR "$1" &
+  ec "$1"
 fi

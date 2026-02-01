@@ -1,2 +1,6 @@
 #!/bin/bash
-exec emacsclient --alternate-editor="" -c "$@"
+if [ $# -eq 0 ]; then
+    exec emacsclient -r --eval "(select-frame-set-input-focus (selected-frame))" >/dev/null &
+else
+    exec emacsclient -r --eval "(progn (find-file \"$1\") (select-frame-set-input-focus (selected-frame)))" >/dev/null &
+fi
