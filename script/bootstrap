@@ -168,11 +168,28 @@ install_spacemacs () {
   fi
 }
 
+install_systemd () {
+  if [ "$(uname -s)" == "Linux" ]
+  then
+    info 'installing systemd user services'
+    mkdir -p "$HOME/.config/systemd/user"
+    local overwrite_all=false backup_all=false skip_all=false
+    for src in $(find -H "$DOTFILES_ROOT/systemd" -name '*.service')
+    do
+      dst="$HOME/.config/systemd/user/$(basename "$src")"
+      link_file "$src" "$dst"
+    done
+    systemctl --user daemon-reload
+    success 'systemd user services installed'
+  fi
+}
+
 setup_gitconfig
 install_dotfiles
 install_xdg
 install_spacemacs
 install_tpm
+install_systemd
 
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]
