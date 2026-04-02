@@ -3,3 +3,5 @@
 *.swp
 *.md.temp
 .claude/settings.local.json
+.claude/worktrees/
+/.dir-locals.el

@@ -72,3 +72,9 @@ export NVM_DIR="$HOME/.nvm"
 
 
 GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/application_default_credentials.json"
+# bun completions
+[ -s "/Users/frener/.bun/_bun" ] && source "/Users/frener/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

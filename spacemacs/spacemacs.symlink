@@ -646,15 +646,9 @@ you should place you code here."
     (setq mac-command-modifier 'meta)
     (setq mac-option-modifier 'super))
 
-  ;; Changes function that is run for pytest
-  ;; (use-package pytest
-  ;;   :init
-  ;;   (progn
-  ;;     (setq pytest-global-name "docker compose run tester python runtests.py")
-  ;;     :ensure t))
   (with-eval-after-load 'lsp-mode
-    (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\dimagi\\'")
-    (setq lsp-file-watch-threshold 5000))
+    (setq lsp-file-watch-threshold 5000)
+    (setq lsp-disabled-clients '(ty-ls)))
 
   (require 'platformio-mode)
 
@@ -666,6 +660,10 @@ you should place you code here."
   (add-hook 'c++-mode-hook (lambda ()
                              (lsp-deferred)
                              (platformio-conditionally-enable)))
+
+  (setq lsp-pyright-langserver-command "basedpyright")
+
+  (setq magit-list-refs-sortby "-committerdate")
   ;; (require 'dap-python)
 
   ;; (require 'acp)
@@ -775,11 +773,11 @@ This function is called at the very end of Spacemacs initialization."
                  impatient-mode import-js importmagic indent-guide info+
                  jinja2-mode js-doc js2-refactor json-mode json-navigator kv
                  ligature link-hint live-py-mode livid-mode logcat lorem-ipsum
-                 macrostep markdown-toc matlab-mode maven-test-mode meghanada
-                 memoize minitest mmm-mode multi-line multi-term mvn mwim nameless
-                 nginx-mode nodejs-repl nose nov npm-mode nyan-mode open-junk-file
-                 org-cliplink org-contrib org-download org-journal org-mime
-                 org-pomodoro org-present org-projectile org-rich-yank
+                 lsp-pyright macrostep markdown-toc matlab-mode maven-test-mode
+                 meghanada memoize minitest mmm-mode multi-line multi-term mvn
+                 mwim nameless nginx-mode nodejs-repl nose nov npm-mode nyan-mode
+                 open-junk-file org-cliplink org-contrib org-download org-journal
+                 org-mime org-pomodoro org-present org-projectile org-rich-yank
                  org-superstar orgit-forge overseer paradox password-generator
                  php-auto-yasnippets php-extras phpcbf phpunit pip-requirements
                  pipenv pippel pkgbuild-mode poetry pony-mode popwin prettier-js
@@ -799,7 +797,8 @@ This function is called at the very end of Spacemacs initialization."
                  web-mode which-key winum wolfram-mode writeroom-mode ws-butler
                  xkcd xquery-mode xterm-color yaml-mode yapfify yasnippet-snippets))
    '(paradox-github-token t)
-   '(safe-local-variable-directories '("/home/farid/dev/aoc/"))
+   '(safe-local-variable-directories
+     '("/Users/frener/dev/overstory/overstory/" "/home/farid/dev/aoc/"))
    '(safe-local-variable-values
      '((eval setq-local lsp-rust-analyzer-linked-projects
              (vector
