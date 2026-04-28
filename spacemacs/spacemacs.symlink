@@ -641,10 +641,19 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
 
-  ;; Use Command as Meta on macOS
   (when (eq system-type 'darwin)
+    ;; Use Command as Meta on macOS
     (setq mac-command-modifier 'meta)
-    (setq mac-option-modifier 'super))
+    (setq mac-option-modifier 'super)
+
+    ;; Follow macOS system appearance
+    (when (boundp 'ns-system-appearance-change-functions)
+      (defun my/apply-system-appearance (appearance)
+        (mapc #'disable-theme custom-enabled-themes)
+        (pcase appearance
+          ('light (load-theme 'solarized-gruvbox-light t))
+          ('dark  (load-theme 'solarized-gruvbox-dark t))))
+      (add-hook 'ns-system-appearance-change-functions #'my/apply-system-appearance)))
 
   (with-eval-after-load 'lsp-mode
     (setq lsp-file-watch-threshold 5000)
